@@ -4,11 +4,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+
+// mongo
+mongoose.connect('mongodb://wpostdba:lim1t<$Plz@ds045097.mongolab.com:45097/wpostdb');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
