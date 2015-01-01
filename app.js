@@ -12,7 +12,7 @@ var users = require('./routes/users');
 var app = express();
 
 // mongo
-mongoose.connect('mongodb://wpostdba:lim1t<$Plz@ds045097.mongolab.com:45097/wpostdb');
+mongoose.connect('mongodb://wpostdba:lim1t%3C%24Plz@ds045097.mongolab.com:45097/wpostdb');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
