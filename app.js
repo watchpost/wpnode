@@ -1,13 +1,13 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+//var routes = require('./routes/index');
+//var users = require('./routes/users');
 
 var app = express();
 
@@ -21,18 +21,18 @@ mongoose.connect('mongodb://wpdba:lim1t<$Plz@ds045097.mongolab.com:45097/wpostdb
 });
 
 // view engine setup
-//app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views'));
 //app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+//app.use('/', routes);
 //app.use('/users', users);
 
 // models ----------------------------------------------------------
@@ -119,3 +119,5 @@ app.get('*', function(req, res){
     res.sendfile('./public/index.html');
 });
 module.exports = app;
+app.listen(8080);
+console.log("App listening on port 8080");
