@@ -21,8 +21,8 @@ mongoose.connect('mongodb://wpdba:lim1t<$Plz@ds045097.mongolab.com:45097/wpostdb
 });
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -35,14 +35,54 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', routes);
 //app.use('/users', users);
 
-mongoose.model('users', { fname: String, lname: String});
+// models ----------------------------------------------------------
+var UserModel = mongoose.model('users', { fname: String, lname: String});
 
-app.get('/users', function(req, res){
-    mongoose.model('users').find(function(err, retval){
-        res.send(retval);
+// routes ----------------------------------------------------------
+app.get('/api/users', function(req, res){
+    UserModel.find(function(err, retval){
+        if(err){
+            res.send(err);
+        }else{
+            res.json(retval);
+        }
     });
 });
-
+app.get('/api/users/:userid', function(req, res){
+    UserModel.find({
+        _id : req.params.userid
+    }, function(err, retval){
+        if(err){
+            res.send(err);
+        }else{
+            res.json(retval);
+        }
+    });
+});
+app.post('/api/users', function(req, res){
+    console.log('req.body: ' + req.body.fname);
+    UserModel.create({
+        fname: req.body.fname,
+        lname: req.body.lname
+    }, function(err, retval){
+        if(err){
+            res.send(err);
+        }else{
+            res.json(retval);
+        }
+    });
+});
+app.delete('/api/users/:userid', function(req, res){
+    UserModel.remove({
+        _id: req.params.userid
+    }, function(err, retval){
+        if(err){
+            res.send(err);
+        }else{
+            res.json(retval);
+        }
+    });
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     var err = new Error('Not Found');
@@ -74,5 +114,8 @@ app.use(function(err, req, res, next) {
     });
 });
 
-
+// application ------------------------------------------------------
+app.get('*', function(req, res){
+    res.sendfile('./public/index.html');
+});
 module.exports = app;
